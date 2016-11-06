@@ -14,10 +14,10 @@ public class Restaurants {
 	protected String city;
 	protected String state;
 	protected int zip;
-	protected Companies companyName;
+	protected String companyName;
 	
 	public Restaurants(String name, String description, String menu, String hours, boolean active, CuisineType cuisine,
-			String street1, String street2, String city, String state, int zip, Companies companyName) {
+			String street1, String street2, String city, String state, int zip, String companyName) {
 		
 		this.name = name;
 		this.description = description;
@@ -36,7 +36,7 @@ public class Restaurants {
 
 	public Restaurants(int restaurantId, String name, String description, String menu, String hours, boolean active,
 			CuisineType cuisine, String street1, String street2, String city, String state, int zip,
-			Companies companyName) {
+			String companyName) {
 		super();
 		this.restaurantId = restaurantId;
 		this.name = name;
@@ -159,11 +159,11 @@ public class Restaurants {
 		this.zip = zip;
 	}
 
-	public Companies getCompanyName() {
+	public String getCompanyName() {
 		return companyName;
 	}
 
-	public void setCompanyName(Companies companyName) {
+	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
 	
