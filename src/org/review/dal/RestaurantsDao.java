@@ -191,7 +191,7 @@ public class RestaurantsDao {
 	
 	public List<Restaurants> getRestaurantsByCompanyName(String companyName) throws SQLException {
 		
-List<Restaurants> restaurants = new ArrayList<Restaurants>();			
+		List<Restaurants> restaurants = new ArrayList<Restaurants>();			
 		
 		String selectRestaurant = "SELECT * from Restaurants where CompanyName=?;";
 		Connection connection = null;
@@ -258,7 +258,13 @@ List<Restaurants> restaurants = new ArrayList<Restaurants>();
 			deleteStmt.setInt(1, restaurant.getRestaurantId());
 			deleteStmt.executeUpdate();
 
-			// Return null so the caller can no longer operate on the BlogPosts instance.
+			ReviewsDao reviewDao = new ReviewsDao();
+			reviewDao.updateRestaurantIdToNull(restaurant.getRestaurantId());
+			
+			RecommendationsDao recommendationsDao = new RecommendationsDao();
+			recommendationsDao.updateRestaurantIdToNull(restaurant.getRestaurantId());
+			
+			
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -274,4 +280,29 @@ List<Restaurants> restaurants = new ArrayList<Restaurants>();
 	
 	}
 	
+public Restaurants updateCompanyName(String companyName) throws SQLException {
+		
+		String deleteRestaurant = "UPDATE Restaurants SET CompanyName=null WHERE CompanyName=?;";
+		Connection connection = null;
+		PreparedStatement deleteStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			deleteStmt = connection.prepareStatement(deleteRestaurant);
+			deleteStmt.setString(1, companyName);
+			deleteStmt.executeUpdate();
+
+			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(deleteStmt != null) {
+				deleteStmt.close();
+			}
+		}
+	
+	}
 }

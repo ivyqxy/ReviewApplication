@@ -199,4 +199,29 @@ public class CreditCardsDao {
 		}
 	}
 	
+	public CreditCards deleteCreditCardsByUserName(String userName) throws SQLException {
+		
+		String deleteCreditCard = "DELETE FROM CreditCards WHERE UserName=?;";
+		Connection connection = null;
+		PreparedStatement deleteStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			deleteStmt = connection.prepareStatement(deleteCreditCard);
+			deleteStmt.setString(1, userName);
+			deleteStmt.executeUpdate();
+
+			// Return null so the caller can no longer operate on the BlogPosts instance.
+			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(deleteStmt != null) {
+				deleteStmt.close();
+			}
+		}
+	}
 }

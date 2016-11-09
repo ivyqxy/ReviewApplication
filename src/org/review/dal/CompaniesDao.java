@@ -133,6 +133,9 @@ public class CompaniesDao {
 			deleteStmt = connection.prepareStatement(deleteCompanies);
 			deleteStmt.setString(1, company.getCompanyName());
 			deleteStmt.executeUpdate();
+			
+			RestaurantsDao rd = new RestaurantsDao();
+			rd.updateCompanyName(company.getCompanyName());
 
 			return null;
 		} catch (SQLException e) {

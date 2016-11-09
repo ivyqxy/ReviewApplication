@@ -12,7 +12,7 @@ public class UsersDao {
 	protected ConnectionManager connectionManager;
 	private static UsersDao instance = null;
 	
-	protected UsersDao() {
+	public UsersDao() {
 		connectionManager = new ConnectionManager();
 	}
 	
@@ -36,7 +36,7 @@ public class UsersDao {
 			insertStmt.setString(3, user.getFirstName());
 			insertStmt.setString(4, user.getLastName());
 			insertStmt.setString(5, user.getEmail());
-			insertStmt.setString(5, user.getPhone());
+			insertStmt.setString(6, user.getPhone());
 			
 			insertStmt.executeUpdate();
 			return user;
@@ -99,7 +99,7 @@ public class UsersDao {
 	
 	public Users delete(Users user) throws SQLException {
 		
-		String deleteUser = "DELETE FROM Persons WHERE UserName=?;";
+		String deleteUser = "DELETE FROM Users WHERE UserName=?;";
 		Connection connection = null;
 		PreparedStatement deleteStmt = null;
 		try {
@@ -107,8 +107,19 @@ public class UsersDao {
 			deleteStmt = connection.prepareStatement(deleteUser);
 			deleteStmt.setString(1, user.getUserName());
 			deleteStmt.executeUpdate();
+			
+			CreditCardsDao cd = new CreditCardsDao();
+			cd.deleteCreditCardsByUserName(user.getUserName());
+			
+			ReservationsDao reservationDao = new ReservationsDao();
+			reservationDao.deleteReservationsByUserName(user.getUserName());
+			
+			ReviewsDao reviewDao = new ReviewsDao();
+			reviewDao.updateUserName(user.getUserName(), null);
+			
+			RecommendationsDao recommendationsDao = new RecommendationsDao();
+			recommendationsDao.updateUserName(user.getUserName(), null);
 
-			// Return null so the caller can no longer operate on the Persons instance.
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();

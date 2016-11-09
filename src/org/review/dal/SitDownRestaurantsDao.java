@@ -183,7 +183,9 @@ public class SitDownRestaurantsDao {
 			deleteStmt.setInt(1, sitDownRestaurant.getRestaurantId());
 			deleteStmt.executeUpdate();
 
-			// Return null so the caller can no longer operate on the BlogPosts instance.
+			ReservationsDao rd = new ReservationsDao();
+			rd.deleteReservationsByRestaurantId(sitDownRestaurant.getRestaurantId());
+			
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();

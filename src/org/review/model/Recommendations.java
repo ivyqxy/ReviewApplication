@@ -2,24 +2,25 @@ package org.review.model;
 
 public class Recommendations {
 
-	
-	protected int recommmendationId;
-	protected Users User;
-	protected Restaurants restaurant;
-	
-	public Recommendations(Users user, Restaurants restaurant) {
-		super();
-		User = user;
-		this.restaurant = restaurant;
-	}
 
-	public Recommendations(int recommmendationId, Users user, Restaurants restaurant) {
+	protected int recommmendationId;
+	protected String userName;
+	protected int restaurantId;
+	
+	
+	public Recommendations(String userName, int restaurantId) {
+		super();
+		this.userName = userName;
+		this.restaurantId = restaurantId;
+	}
+	
+	public Recommendations(int recommmendationId, String userName, int restaurantId) {
 		super();
 		this.recommmendationId = recommmendationId;
-		User = user;
-		this.restaurant = restaurant;
+		this.userName = userName;
+		this.restaurantId = restaurantId;
 	}
-
+	
 	public int getRecommmendationId() {
 		return recommmendationId;
 	}
@@ -28,21 +29,20 @@ public class Recommendations {
 		this.recommmendationId = recommmendationId;
 	}
 	
-	public Users getUser() {
-		return User;
+	public String getUserName() {
+		return userName;
 	}
 	
-	public void setUser(Users user) {
-		User = user;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
-	public Restaurants getRestaurant() {
-		return restaurant;
+	public int getRestaurantId() {
+		return restaurantId;
 	}
 	
-	public void setRestaurant(Restaurants restaurant) {
-		this.restaurant = restaurant;
+	public void setRestaurantId(int restaurantId) {
+		this.restaurantId = restaurantId;
 	}
-	
 	
 }
