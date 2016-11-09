@@ -3,6 +3,7 @@ package org.review.tools;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import org.review.dal.*;
 import org.review.model.*;
@@ -77,7 +78,147 @@ public class Inserter {
 		Reservations reservation2 = new Reservations(new Timestamp(date.getTime()), new Timestamp(date.getTime()), 2, "sprakash2", restaurant1.getRestaurantId());
 		reservation2 = reservationsDao.create(reservation2);
 		
+		// READ
 		
+		Users user3 = userDao.getUserByUserName(user2.getUserName());
+		System.out.format("Reading User: u:%s f:%s l:%s \n",user3.getUserName(),user3.getFirstName(),user3.getLastName());
 		
+		Companies company3 = companiesDao.getCompanyByCompanyName(company1.getCompanyName());
+		System.out.format("Reading Company: Name: %s About: %s\n",company3.getCompanyName(),company3.getAbout());
+		
+		CreditCards card3 = creditCardsDao.getCreditCardByCardNumber(card1.getCardNumber());
+		System.out.format("Reading Creditcard: Number: %d Expiration: %s UserName: %s\n",card3.getCardNumber(),card3.getExpiration().toString(),card3.getUser().getUserName());
+		
+		List<CreditCards> creditCards = creditCardsDao.getCreditCardsByUserName(card3.getUser().getUserName());
+		for(CreditCards c : creditCards) {
+			System.out.format("Looping credit cards: Number: %d Expiration: %s UserName: %s\n",
+					c.getCardNumber(),c.getExpiration().toString(),c.getUser().getUserName());
+		}
+				
+		Restaurants restaurant3 = restaurantsDao.getRestaurantById(restaurant1.getRestaurantId());
+		System.out.format("Reading Restaurant: ID: %d Name: %s CompanyName: %s\n", restaurant3.getRestaurantId(),restaurant3.getName(),restaurant3.getCompanyName());
+		
+		List<Restaurants> restaurants1 = restaurantsDao.getRestaurantsByCompanyName(restaurant3.getCompanyName());
+		for(Restaurants r : restaurants1) {
+			System.out.format("Looping Restaurant: ID: %d Name: %s CompanyName: %s\n",r.getRestaurantId(),r.getName(),r.getCompanyName());
+		}
+		
+		List<Restaurants> restaurants2 = restaurantsDao.getRestaurantsByCuisine(restaurant3.getCuisine());
+		for(Restaurants r : restaurants2) {
+			System.out.format("Looping Restaurant: ID: %d Name: %s Cuisine: %s\n",r.getRestaurantId(),r.getName(),r.getCuisine());
+		}
+		
+		SitDownRestaurants s3 = sitDownRestaurantsDao.getSitDownRestaurantById(s1.getRestaurantId());
+		System.out.format("Reading SitDownRestaurant: ID: %d Max Capacity: %d\n", s3.getRestaurantId(),s3.getCapacity());
+		
+		List<SitDownRestaurants> sitDownRestaurants = sitDownRestaurantsDao.getSitDownRestaurantsByCompanyName(s1.getCompanyName());
+		for(SitDownRestaurants s : sitDownRestaurants) {
+			System.out.format("Reading SitDownRestaurant: ID: %d Max Capacity: %d\n", s.getRestaurantId(),s.getCapacity());
+		}
+		
+		TakeOutRestaurants t3 = takeOutRestaurantsDao.getTakeOutRestaurantById(t1.getRestaurantId());
+		System.out.format("Reading TakeOutRestaurant: ID: %d Max Waiting time: %d\n", t3.getRestaurantId(),t3.getMaxWaitTime());
+		
+		List<TakeOutRestaurants> takeOutRestaurants = takeOutRestaurantsDao.getTakeOutRestaurantsByCompanyName(t1.getCompanyName());
+		for(TakeOutRestaurants t : takeOutRestaurants) {
+			System.out.format("Reading TakeOutRestaurant: ID: %d Max Waiting time: %d\n", t.getRestaurantId(),t.getMaxWaitTime());
+		}
+		
+		FoodCartRestaurants f3 = foodCartRestaurantsDao.getFoodCartRestaurantById(f1.getRestaurantId());
+		System.out.format("Reading FoodCartRestaurant: ID: %d isLicensed: %b\n", f3.getRestaurantId(),f3.isLicensed());
+		
+		List<FoodCartRestaurants> foodCartRestaurants = foodCartRestaurantsDao.getFoodCartRestaurantsByCompanyName(f3.getCompanyName());
+		for(FoodCartRestaurants f : foodCartRestaurants) {
+			System.out.format("Reading FoodCartRestaurant: ID: %d isLicensed: %b\n", f.getRestaurantId(),f.isLicensed());
+		}
+		
+		Reservations reservation3 = reservationsDao.getReservationById(reservation1.getReservationId());
+		System.out.format("Reading Reservation: ReservationId: %d Size: %d UserName: %s RestaurantId: %d\n",
+				reservation3.getReservationId(),reservation3.getSize(),reservation3.getUserName(),reservation3.getRestaurantId());
+		
+		List<Reservations> reservations1 = reservationsDao.getReservationsByUserName(reservation1.getUserName());
+		for(Reservations r : reservations1) {
+			System.out.format("Reading Reservation: ReservationId: %d Size: %d UserName: %s RestaurantId: %d\n",
+					r.getReservationId(),r.getSize(),r.getUserName(),r.getRestaurantId());
+		}
+		
+		List<Reservations> reservations2 = reservationsDao.getReservationsBySitDownRestaurantId(reservation1.getRestaurantId());
+		for(Reservations r : reservations2) {
+			System.out.format("Reading Reservation: ReservationId: %d Size: %d UserName: %s SitDownRestaurantId: %d\n",
+					r.getReservationId(),r.getSize(),r.getUserName(),r.getRestaurantId());
+		}
+		
+		Reviews review3 = reviewsDao.getReviewById(review1.getReviewId());
+		System.out.format("Reading Review: ReviewId: %d Content: %s Rating: %f UserName: %s RestaurantId: %d\n",
+				review3.getReviewId(),review3.getContent(),review3.getRating(),review3.getUserName(),review3.getRestaurantId());
+		
+		List<Reviews> reviews1 = reviewsDao.getReviewsByRestaurantId(review1.getRestaurantId());
+		for(Reviews r : reviews1) {
+			System.out.format("Reading Review: ReviewId: %d Content: %s Rating: %f UserName: %s RestaurantId: %d\n",
+					r.getReviewId(),r.getContent(),r.getRating(),r.getUserName(),r.getRestaurantId());
+		}
+		
+		List<Reviews> reviews2 = reviewsDao.getReviewsByUserName(review1.getUserName());
+		for(Reviews r : reviews2) {
+			System.out.format("Reading Review: ReviewId: %d Content: %s Rating: %f UserName: %s RestaurantId: %d\n",
+					r.getReviewId(),r.getContent(),r.getRating(),r.getUserName(),r.getRestaurantId());
+		}
+		
+		Recommendations recommendation3 = recommendationsDao.getRecommendationById(recommendation1.getRecommmendationId());
+		System.out.format("Reading Recommendation: RecommendationId: %d UserName: %s RestaurantId: %d\n",
+				recommendation3.getRecommmendationId(),recommendation3.getUserName(),recommendation3.getRestaurantId());
+		
+		List<Recommendations> recommendations1 = recommendationsDao.getRecommendationsByUserName(recommendation1.getUserName());
+		for(Recommendations r : recommendations1) {
+			System.out.format("Reading Recommendation: RecommendationId: %d UserName: %s RestaurantId: %d\n",
+					r.getRecommmendationId(),r.getUserName(),r.getRestaurantId());
+		}
+		
+		List<Recommendations> recommendations2 = recommendationsDao.getRecommendationsByRestaurantId(recommendation1.getRestaurantId());
+		for(Recommendations r : recommendations2) {
+			System.out.format("Reading Recommendation: RecommendationId: %d UserName: %s RestaurantId: %d\n",
+					r.getRecommmendationId(),r.getUserName(),r.getRestaurantId());
+		}
+		
+		// UPDATE
+		
+		company1 = companiesDao.updateAbout(company1, "About12313");
+		System.out.format("Update Company: Name: %s About: %s\n",company1.getCompanyName(),company1.getAbout());
+		
+		card1 = creditCardsDao.updateExpiration(card1, date);
+		System.out.format("Update Creditcard: Number: %d Expiration: %s UserName: %s\n",card1.getCardNumber(),card1.getExpiration().toString(),card1.getUser().getUserName());
+
+		
+		// DELETE
+		
+		System.out.format("Deleting Reservation: %d\n\n", reservation1.getReservationId());
+		reservationsDao.delete(reservation1);
+		
+		System.out.format("Deleting Recommendation: %d\n\n", recommendation1.getRecommmendationId());
+		recommendationsDao.delete(recommendation1);
+		
+		System.out.format("Deleting Review: %d\n\n", review1.getReviewId());
+		reviewsDao.delete(review1);
+		
+		System.out.format("Deleting SitDownRestaurants: %d\n\n", s1.getRestaurantId());
+		sitDownRestaurantsDao.delete(s1);
+		
+		System.out.format("Deleting TakeOutRestaurants: %d\n\n", t1.getRestaurantId());
+		takeOutRestaurantsDao.delete(t1);
+		
+		System.out.format("Deleting FoodCartRestaurants: %d\n\n", f1.getRestaurantId());
+		foodCartRestaurantsDao.delete(f1);
+		
+		System.out.format("Deleting Restaurants: %d\n\n", restaurant1.getRestaurantId());
+		restaurantsDao.delete(restaurant1);
+		
+		System.out.format("Deleting User: %s\n\n", user1.getUserName());
+		userDao.delete(user1);
+		
+		System.out.format("Deleting Credit Card: %d\n\n", card1.getCardNumber());
+		creditCardsDao.delete(card1);
+		
+		System.out.format("Deleting Company: %s\n\n", company1.getCompanyName());
+		companiesDao.delete(company1);
 	}
 }
